@@ -1,1 +1,8 @@
+# Ignore config files with sensitive data
+env.js
+
+# Ignore folders and dependencies
 node_modules/
+.env
+.vscode/
+.DS_Store

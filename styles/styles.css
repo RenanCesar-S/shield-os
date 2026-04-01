@@ -1,0 +1,990 @@
+/* --- Global Styles --- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #121212;
+  color: #e0e0e0;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  display: flex;
+  justify-content: center;
+  padding: 24px;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  max-width: 1000px;
+  background-color: #1e1e1e;
+  padding: 32px;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+}
+
+.container p {
+  margin-right: auto;
+}
+
+h1 {
+  color: #bb86fc;
+  margin-bottom: 8px;
+}
+h2 {
+  margin-bottom: 16px;
+  position: relative;
+  top: 50%;
+  left: 50%;
+  transform: translate(-25%, -50%);
+}
+h3 {
+  color: #03dac6;
+  margin-bottom: 8px;
+}
+
+/* --- REUSABLE VIEW SYSTEM --- */
+/* Esta classe controla todas as seções (Login, Register, Dash) */
+.view {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 16px;
+  animation: fadeIn 0.3s ease-in; /* Suaviza a troca de tela */
+}
+
+/* FORMS */
+#formLogin,
+#formRegister,
+#formResetFinal {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Esconde por padrão, mostraremos via JS */
+section.view {
+  display: none;
+}
+
+/* Estilo para telas de formulário (Login e Register) */
+#loginSection,
+#registerSection {
+  width: 300px; /* Largura fixa para formulários ficarem alinhados */
+}
+#forgotSection {
+  width: 332px;
+}
+
+.user-header {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+/* --- INPUTS, SPANS & BUTTONS --- */
+input {
+  width: 100%;
+  border: 2px solid #03dac6;
+  border-radius: 8px;
+  background-color: transparent;
+  outline: none;
+  padding: 10px;
+  color: #ffffff;
+  transition: 0.3s;
+}
+
+input:focus {
+  border: 2px solid #bb86fc;
+}
+
+input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: #03dac6;
+  cursor: pointer;
+}
+
+button {
+  background-color: #03dac6;
+  color: #000;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+span {
+  cursor: pointer;
+  color: #03dac6;
+}
+span:hover,
+.remember-me:hover p {
+  color: #018786;
+}
+
+button:hover {
+  background-color: #018786;
+}
+
+button:disabled {
+  background-color: #b0bec5;
+  color: #757575;
+  cursor: not-allowed;
+  opacity: 0.6;
+  transform: none;
+}
+
+button:disabled:hover {
+  background-color: #b0bec5;
+  filter: none;
+}
+
+.btn-secondary {
+  background-color: transparent;
+  color: #03dac6;
+  border: 1px solid #03dac6;
+}
+
+.register-msg {
+  margin-top: 32px;
+}
+
+.register-success {
+  display: none;
+  color: #03dac6;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.remeber-and-forgot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  font-size: 14px;
+}
+
+.remeber-and-forgot .remember-me {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+  color: #03dac6;
+  cursor: pointer;
+}
+
+.remeber-and-forgot .remember-me input {
+  width: 100%;
+}
+
+/* --- PASSWORD FIELD WITH EYE --- */
+.passwordSec {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.passwordSec input {
+  width: 100%;
+  padding-right: 48px;
+}
+
+.eye {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 22px;
+  cursor: pointer;
+  filter: invert(100%);
+  opacity: 0.6;
+  transition: opacity 0.3s;
+}
+.passwordSec .eye:hover {
+  opacity: 1;
+}
+
+.error-msg {
+  display: none;
+  font-size: 14px;
+  color: rgb(255, 83, 83);
+}
+
+.email-field > label {
+  color: #03dac6;
+}
+
+#resetMsg {
+  display: none;
+  font-size: 14px;
+  text-align: center;
+  margin-top: 10px;
+  color: #03dac6;
+}
+
+#btnBackToForgotFromReset,
+#btnBackToLoginFromForgot {
+  margin-right: auto;
+}
+
+.hiddenEye {
+  display: none;
+}
+
+/* --- DASHBOARD SPECIFIC --- */
+#dashboardSection .controls {
+  padding-top: 8px;
+  margin-bottom: 16px;
+}
+
+#alertBanner {
+  background-color: #ff4d4d;
+  color: white;
+  padding: 8px;
+  text-align: center;
+  border-radius: 4px;
+  margin-bottom: 16px;
+  display: none;
+}
+
+#statsContainer {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.card #statLocked {
+  color: #cf6679;
+}
+
+.searchBar {
+  display: flex;
+  margin-left: auto;
+}
+
+#iptSearch {
+  width: 16em;
+  background-color: #3a3a3a;
+  border: 2px solid transparent;
+}
+
+#iptSearch:focus {
+  border: 2px solid #bb86fc;
+  box-shadow: 0px 0px 10px rgba(187, 134, 252, 0.2);
+}
+
+/* --- TABLE STYLES --- */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 16px;
+}
+th,
+td {
+  text-align: left;
+  padding: 12px;
+  border-bottom: 2px solid #333;
+}
+th {
+  background-color: #2c2c2c;
+}
+
+.container-for-dashboard {
+  display: block;
+  width: 90%;
+  position: static;
+  top: auto;
+  left: auto;
+  transform: none;
+}
+
+.status-locked {
+  color: #cf6679;
+  font-weight: bold;
+}
+.status-suspicious {
+  color: #fbc02d;
+  font-weight: bold;
+}
+.status-active {
+  color: #4caf50;
+  font-weight: bold;
+}
+
+/* --- IMGS --- */
+.user-header-img {
+  width: 48px;
+  filter: invert(100%);
+}
+
+/* --- GAME XP/LEVEL STYLES --- */
+.game-view {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  width: 720px;
+  max-width: 640px;
+  background: #10121a;
+  border: 1px solid #2b2f4e;
+  border-radius: 10px;
+  padding: 16px;
+}
+
+.game-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.user-info {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+}
+
+.user-info > div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.user-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.2rem;
+  margin-left: auto;
+}
+
+.avatar {
+  width: 40px;
+  border-radius: 50%;
+}
+
+.points-container {
+  background: #24283b;
+  border: 1px solid #424f7f;
+  border-radius: 9px;
+  color: #f8fbff;
+  font-size: 0.9rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem 0.55rem;
+}
+
+.points-container .coin-icon {
+  width: 16px;
+  filter: invert(1);
+}
+
+#toggleGamePts {
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.xp-panel {
+  background-color: #1b1f33;
+  border: 1px solid #2d3a66;
+  border-radius: 10px;
+  padding: 0.7rem;
+}
+
+.xp-header {
+  display: flex;
+  justify-content: space-between;
+  font-weight: 600;
+  margin-bottom: 0.35rem;
+  color: #e6e9ff;
+  font-size: 0.95rem;
+}
+
+.xp-bar-bg {
+  width: 100%;
+  height: 12px;
+  border-radius: 999px;
+  background: #2a3160;
+  overflow: hidden;
+  margin-bottom: 0.35rem;
+}
+
+.xp-bar-fill {
+  width: 0;
+  height: 100%;
+  background: linear-gradient(90deg, #678dff, #00c9ff);
+  border-radius: 4rem;
+  transition: width 0.5s ease-in-out;
+}
+
+.xp-text {
+  color: #b8c7f5;
+  font-size: 0.82rem;
+}
+
+.task-list {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.task-item {
+  background: #141a31;
+  border: 1px solid #2a335e;
+  border-radius: 9px;
+  padding: 0.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.task-desc {
+  font-size: 0.82rem;
+  color: #b7bdd6;
+  margin-top: 0.1rem;
+}
+
+.task-btn {
+  border: none;
+  border-radius: 6px;
+  background: #5b8dff;
+  color: #fff;
+  padding: 0.28rem 0.55rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.task-btn:hover {
+  background: #3f6ef2;
+}
+
+.task-btn-alt {
+  background: #ff9f43;
+}
+
+.task-item.completed {
+  border-color: #4caf50;
+  background: rgba(76, 175, 80, 0.1);
+  position: relative;
+  opacity: 0.8;
+}
+.task-item.completed::after {
+  content: "✅";
+  position: absolute;
+  right: 15px;
+  font-size: 1.2rem;
+}
+
+.task-item.completed .task-title {
+  color: #4caf50;
+  text-decoration: line-through;
+}
+
+#playerName {
+  display: inline-block;
+}
+
+.user-bio {
+  margin: 2px 0 0;
+  color: #c4c8de;
+  font-size: 0.86rem;
+  width: 280px;
+}
+
+.bio-meta-row {
+  display: flex;
+  gap: 0.6rem;
+  width: 100%;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  margin-top: 0.35rem;
+}
+
+.bio-area {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.35rem 0.45rem;
+  min-width: 220px;
+  height: max-content;
+  flex: 1;
+}
+
+.user-bio {
+  margin: 0;
+  color: #ffffff;
+  font-size: 0.8rem;
+  width: 100%;
+  outline: none;
+}
+
+.bio-area button {
+  border: 1px solid #4864c2;
+  background: #2f4dd4;
+  color: white;
+  border-radius: 6px;
+  font-size: 0.72rem;
+  padding: 0.24rem 0.45rem;
+  cursor: pointer;
+  letter-spacing: 1px;
+}
+
+.bio-area #editBio {
+  background: #ff9f43;
+  border: none;
+}
+
+p[contenteditable="true"] {
+  display: block;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  word-break: break-all;
+}
+
+#msgBioOk {
+  color: #4caf50;
+  font-size: 0.75rem;
+  margin-top: 0.25rem;
+}
+
+.bio-area button,
+#editBio:hover {
+  background: #3f61eb;
+}
+
+.points-top-right {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+}
+
+.user-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.2rem;
+  min-width: 170px;
+}
+
+.game-controls {
+  display: flex;
+  gap: 0.45rem;
+}
+
+/* Layout Principal do Dashboard */
+.admin-layout {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  color: #e0e0e0;
+  font-family: "Inter", sans-serif;
+}
+
+/* Header Estilizado */
+.admin-header {
+  margin-bottom: 30px;
+  border-left: 5px solid #bc13fe; /* Roxo Neon */
+  padding-left: 20px;
+}
+
+.title-group {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.admin-header h1 {
+  font-size: 2.5rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin: 0;
+  color: #fff;
+  text-shadow: 0 0 10px rgba(188, 19, 254, 0.5);
+}
+
+.subtitle {
+  color: #888;
+  font-size: 0.9rem;
+  margin-top: 5px;
+}
+
+/* Barra de Navegação e Ações */
+.admin-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 15px 25px;
+  border-radius: 12px;
+  backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  margin-bottom: 25px;
+  gap: 15px;
+}
+
+.primary-actions {
+  display: flex;
+  gap: 10px;
+}
+
+/* Input de Busca Neon */
+.search-box input {
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid #333;
+  padding: 10px 15px;
+  border-radius: 8px;
+  color: #fff;
+  width: 250px;
+  transition: 0.3s;
+}
+
+.search-box input:focus {
+  border-color: #00f2ff;
+  box-shadow: 0 0 10px rgba(0, 242, 255, 0.3);
+  outline: none;
+}
+
+.btn-warning.active-filter {
+  background: rgba(255, 68, 68, 0.2); /* Fundo sutil vermelho */
+  border: 1px solid #ff4444;
+  color: #ff4444;
+  position: relative;
+}
+
+/* Criando um "LED" aceso no canto do botão */
+.btn-warning.active-filter::after {
+  content: "";
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  width: 10px;
+  height: 10px;
+  background: #ff4444b9;
+  border-radius: 50%;
+  box-shadow: 0 0 10px #ff4444d5;
+}
+
+/* Grid de Estatísticas */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.stat-card {
+  background: rgba(11, 11, 83, 0.3);
+  padding: 20px;
+  border-radius: 15px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.stat-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: #00f2ff; /* Ciano para total */
+}
+
+.stat-card.critical::before {
+  background: #ff4444; /* Vermelho para bloqueados */
+}
+
+.stat-label {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  color: #aaa;
+}
+
+/* Painel de Vidro (Área da Tabela) */
+.glass-panel {
+  padding: 16px;
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(15px);
+  border-radius: 20px;
+  border: 1px;
+}
+
+/* 1. O Fundo Escuro do Modal */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.85); /* Fundo bem escuro */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  backdrop-filter: blur(5px); /* Efeito de desfoque no fundo */
+}
+
+/* 2. A Caixa da Loja */
+.modal-content {
+  background: #1a2035;
+  border: 2px solid #34495e;
+  border-radius: 15px;
+  width: 90%;
+  max-width: 500px;
+  padding: 1.5rem;
+  color: white;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid #2c3e50;
+  padding-bottom: 0.5rem;
+}
+
+.close-modal {
+  color: #ff0055;
+  font-size: 28px;
+  cursor: pointer;
+}
+
+.inventory-item {
+  padding: 10px;
+  margin: 5px 0;
+  background: rgba(255, 255, 255, 0.05);
+  border-left: 3px solid #00f2ff;
+}
+
+.h2-modal {
+  margin-bottom: 0;
+  position: static;
+  top: 0;
+  left: 0;
+  transform: none;
+}
+
+.border-danger {
+  border: 2px solid #ff0055 !important;
+  box-shadow: 0 0 30px rgba(255, 0, 85, 0.3) !important;
+}
+
+.text-danger {
+  color: #ff0055;
+}
+
+.warning-text {
+  color: #ff0055;
+  font-size: 0.8rem;
+  margin-top: 10px;
+  letter-spacing: 1px;
+  font-weight: bold;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.btn-danger {
+  background: #ff0055;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-family: "Orbitron", sans-serif;
+}
+
+#btnCloseStore {
+  background: transparent;
+  border: none;
+  color: #bdc3c7;
+  font-size: 1.8rem;
+  cursor: pointer;
+}
+
+.game-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+
+  background-color: #121212;
+}
+
+.game-active-bg {
+  /* Usamos um gradiente que imita sua imagem para as bordas não ficarem secas */
+  background: url(../imgs/game-bg.jpg);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+/* 3. O Saldo de Pontos */
+.user-balance {
+  text-align: center;
+  background: #2c3e50;
+  padding: 0.8rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+}
+
+#storeUserPoints {
+  color: #f1c40f; /* Cor de ouro para os pontos */
+  font-size: 1.2rem;
+}
+
+/* 4. A Grade de Itens (Store Grid) */
+.store-grid {
+  padding-top: 0.1rem;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  max-height: 400px;
+  overflow-y: auto; /* Scroll se tiver muitos itens */
+}
+
+.store-item {
+  background: #141a31;
+  border: 1px solid #2a335e;
+  padding: 1rem;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  transition: transform 0.2s;
+}
+
+.store-item:hover {
+  transform: translateY(-3px);
+  border-color: #3498db;
+}
+
+/* 5. O Botão de Compra */
+.buy-btn {
+  background: #27ae60;
+  color: white;
+  border: none;
+  padding: 0.6rem;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.buy-btn:hover {
+  background: #2ecc71;
+}
+
+/* Estado de Item que já possui (Owned) */
+.owned {
+  background: #34495e !important;
+  color: #7f8c8d;
+  cursor: not-allowed;
+}
+
+/* --- ANIMATIONS --- */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Container das notificações */
+#notification-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 2000;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Estilo de cada mensagem */
+.toast {
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  color: white;
+  font-weight: bold;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  animation: slideIn 0.5s ease forwards;
+  min-width: 250px;
+}
+
+.toast.success {
+  background: #27ae60;
+  border-left: 5px solid #2ecc71;
+}
+
+.toast.error {
+  background: #c0392b;
+  border-left: 5px solid #e74c3c;
+}
+
+/* Animação de entrada */
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* Classe para sumir */
+.toast.fade-out {
+  animation: slideOut 0.5s ease forwards;
+}
+
+@keyframes slideOut {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}

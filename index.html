@@ -1,0 +1,477 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <script type="module" src="./components/app.js" defer></script>
+    <script type="module" src="./components/game.js" defer></script>
+    <script
+      type="text/javascript"
+      src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"
+    ></script>
+
+    <link rel="stylesheet" href="./styles/styles.css" />
+    <link rel="stylesheet" href="./styles/loader.css" />
+    <title>Login Theme</title>
+  </head>
+  <body id="body">
+    <main id="container" class="container">
+      <section id="loginSection" class="view" style="display: flex">
+        <h2>Welcome back</h2>
+        <div class="user-header">
+          <img src="./imgs/login.png" class="user-header-img" alt="login-img" />
+          <h3>User Login</h3>
+        </div>
+        <form id="formLogin">
+          <input
+            type="text"
+            id="iptUser"
+            placeholder="Username"
+            autocomplete="username"
+          />
+          <div class="passwordSec">
+            <input
+              type="password"
+              id="iptPass"
+              placeholder="Password"
+              autocomplete="current-password"
+            />
+            <div id="togglePass">
+              <img
+                id="eyeVisible"
+                class="eye"
+                src="./imgs/visible.png"
+                alt="eye_password"
+              />
+              <img
+                id="eyeNoVisible"
+                class="eye hiddenEye"
+                src="./imgs/novisible.png"
+                alt="eye_password"
+              />
+            </div>
+          </div>
+          <div class="remeber-and-forgot">
+            <label class="remember-me">
+              <input type="checkbox" name="remember" id="checkRemeberMe" />
+              <p for="checkRemeberMe">Remember me</p>
+            </label>
+
+            <span id="btnForgotPass">Forgot password?</span>
+          </div>
+          <button id="btnLogin" type="submit">Login</button>
+        </form>
+        <div id="loaderLogin" class="loader-login hidden"></div>
+
+        <p
+          id="errorLogin"
+          style="display: none; font-size: 14px; color: rgb(255, 83, 83)"
+        ></p>
+
+        <p class="register-msg">
+          Don't have an account?
+          <span id="btnGoToRegister">Register here</span>.
+        </p>
+      </section>
+
+      <section id="registerSection" class="view">
+        <div class="user-header">
+          <img
+            src="./imgs/register.png"
+            class="user-header-img"
+            alt="register-img"
+          />
+          <h3>Create New Account</h3>
+        </div>
+        <form id="formRegister">
+          <input
+            type="text"
+            id="regFullName"
+            placeholder="Full Name"
+            autocomplete="name"
+          />
+
+          <input
+            type="text"
+            id="regUser"
+            placeholder="Username"
+            autocomplete="username"
+          />
+
+          <input
+            type="email"
+            id="regEmail"
+            placeholder="Email"
+            autocomplete="email"
+          />
+
+          <input
+            type="tel"
+            id="regTel"
+            placeholder="Telephone (99) 90000-0000"
+            autocomplete="tel"
+          />
+
+          <div id="regPassSec" class="passwordSec">
+            <input
+              type="password"
+              id="regPass"
+              placeholder="Password"
+              autocomplete="new-password"
+            />
+            <div id="togglePassRegister">
+              <img
+                id="regEyeVisible"
+                class="eye"
+                src="./imgs/visible.png"
+                alt="eye"
+              />
+              <img
+                id="regEyeNoVisible"
+                class="eye hiddenEye"
+                src="./imgs/novisible.png"
+                alt="eye"
+              />
+            </div>
+          </div>
+
+          <div id="regConfirmPassSec" class="passwordSec">
+            <input
+              type="password"
+              id="regPassConfirm"
+              placeholder="Confirm Password"
+              autocomplete="new-password"
+            />
+            <div id="togglePassConfirmRegister">
+              <img
+                id="confirmEyeVisible"
+                class="eye"
+                src="./imgs/visible.png"
+                alt="eye"
+              />
+              <img
+                id="confirmEyeNoVisible"
+                class="eye hiddenEye"
+                src="./imgs/novisible.png"
+                alt="eye"
+              />
+            </div>
+          </div>
+
+          <button id="btnDoRegister" type="submit">Register</button>
+        </form>
+        <div id="loaderRegister" class="loader-register hidden"></div>
+        <button id="btnBackToLogin" class="btn-secondary">Back to Login</button>
+        <p id="regSuccess" class="register-success">
+          Your registration has been successfully completed.
+        </p>
+      </section>
+
+      <section id="forgotSection" class="view">
+        <div class="user-header">
+          <img
+            src="./imgs/forgot.png"
+            class="user-header-img"
+            alt="forgot-img"
+          />
+          <h3>Reset your Password</h3>
+        </div>
+        <p class="info-msg">
+          Enter your email address to receive a reset link.
+        </p>
+        <div class="email-field">
+          <label for="emailForgot">Your Email</label>
+          <input type="email" id="emailForgot" />
+        </div>
+        <button id="btnEmailRecovery">Send Reset instructions</button>
+        <div id="loaderReset" class="loader-reset hidden"></div>
+        <span id="btnBackToLoginFromForgot">Return to Sign In</span>
+      </section>
+
+      <section id="resetPassFinalSection" class="view">
+        <div class="user-header">
+          <img
+            src="./imgs/forgot.png"
+            class="user-header-img"
+            alt="reset-img"
+          />
+          <h3>Reset Your Password</h3>
+        </div>
+
+        <p class="info-msg">
+          Enter the code sent to
+          <strong id="emailSent"></strong> and set your new password.
+        </p>
+        <form id="formResetFinal">
+          <div class="email-field">
+            <label for="iptResetCode">Verification Code</label>
+            <input
+              type="text"
+              id="iptResetCode"
+              placeholder="Enter 6-digit code"
+              inputmode="numeric"
+              pattern="[0-9]*"
+              autocomplete="one-time-code"
+            />
+          </div>
+
+          <div id="passwordResetSec" class="passwordSec">
+            <input
+              type="password"
+              id="iptNewPass"
+              placeholder="New Password"
+              autocomplete="new-password"
+            />
+            <div id="togglePassReset">
+              <img
+                id="resetEyeVisible"
+                class="eye"
+                src="./imgs/visible.png"
+                alt="eye_password"
+              />
+              <img
+                id="resetNoEyeVisible"
+                class="eye hiddenEye"
+                src="./imgs/novisible.png"
+                alt="eye_password"
+              />
+            </div>
+          </div>
+
+          <div id="passwordConfirmResetSec" class="passwordSec">
+            <input
+              type="password"
+              id="iptConfirmNewPass"
+              placeholder="Confirm New Password"
+              autocomplete="new-password"
+            />
+            <div id="togglePassConfirmReset">
+              <img
+                id="resetConfirmEyeVisible"
+                class="eye"
+                src="./imgs/visible.png"
+                alt="eye_password"
+              />
+              <img
+                id="resetConfirmNoEyeVisible"
+                class="eye hiddenEye"
+                src="./imgs/novisible.png"
+                alt="eye_password"
+              />
+            </div>
+          </div>
+
+          <button id="btnFinishReset" type="submit">Update Password</button>
+        </form>
+
+        <div id="loaderReset2" class="loader-reset hidden"></div>
+
+        <span id="btnBackToForgotFromReset">Back</span>
+
+        <p id="resetMsg"></p>
+      </section>
+
+      <section id="dashboardAdminSection" class="view admin-layout">
+        <header class="admin-header">
+          <div class="title-group">
+            <h1>Command Center</h1>
+            <div id="loader" class="loader hidden"></div>
+          </div>
+          <p class="subtitle">Global Player Surveillance & Security</p>
+        </header>
+
+        <nav class="admin-nav">
+          <div class="primary-actions">
+            <button id="btnLoadReport" class="btn-neon">
+              Refresh Database
+            </button>
+            <button id="btnFilterLocked" class="btn-warning">
+              Show Only Locked
+            </button>
+          </div>
+          <div class="search-box">
+            <input
+              type="text"
+              id="iptSearch"
+              placeholder="Search player by name..."
+            />
+          </div>
+          <button id="btnLogoutAdmin" class="btnLogoutAdmin">
+            Exit Terminal
+          </button>
+        </nav>
+
+        <div id="alertBanner" class="alert-neon"></div>
+
+        <div id="statsContainer" class="stats-grid" style="display: none">
+          <div class="stat-card">
+            <span class="stat-label">Total Players</span>
+            <h2 id="statTotal">0</h2>
+          </div>
+          <div class="stat-card critical">
+            <span class="stat-label">Blocked Accounts</span>
+            <h2 id="statLocked">0</h2>
+          </div>
+        </div>
+
+        <div id="dashboardArea" class="glass-panel">
+          <div class="empty-state">
+            <p style="padding: 8px">
+              Awaiting command... <br /><span
+                >Initialise database to view active players.</span
+              >
+            </p>
+          </div>
+        </div>
+
+        <div id="inventoryModal" class="modal hidden">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h2 class="h2-modal">
+                <i class="fas fa-boxes"></i> PLAYER INVENTORY
+              </h2>
+              <span class="close-modal">&times;</span>
+            </div>
+            <div id="inventory-list" class="modal-body"></div>
+          </div>
+        </div>
+
+        <div id="deleteModal" class="modal hidden">
+          <div class="modal-content border-danger">
+            <div class="modal-header">
+              <h2 class="text-danger h2-modal">
+                <i class="fas fa-exclamation-triangle"></i> CRITICAL TERMINATION
+              </h2>
+            </div>
+            <div class="modal-body">
+              <p>
+                Are you sure you want to terminate Player
+                <span id="deleteUserName" class="highlight"></span>?
+              </p>
+              <p class="warning-text">THIS ACTION CANNOT BE UNDONE.</p>
+            </div>
+            <div class="modal-footer">
+              <button id="btnCancelDelete" class="btn-secondary">ABORT</button>
+              <button id="btnConfirmDelete" class="btn-danger">
+                CONFIRM TERMINATION
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="dashboardGameSection" class="view game-view">
+        <div class="game-header">
+          <div class="user-info">
+            <img
+              src="./imgs/login.png"
+              class="user-header-img avatar"
+              alt="avatar"
+            />
+            <div>
+              <h3 id="game-welcome">
+                Welcome, <span id="playerName">Player</span>
+              </h3>
+              <p class="user-title">Level <span id="userLevel">1</span></p>
+            </div>
+          </div>
+
+          <div class="points-container points-top-right">
+            <strong id="userPoints" class="off">0</strong>
+            <small>pts</small>
+            <div id="toggleGamePts">
+              <img
+                id="gameEyeVisible"
+                class="coin-icon hiddenEye"
+                src="./imgs/visible.png"
+                alt="eye_icon"
+              />
+              <img
+                id="gameNoEyeVisible"
+                class="coin-icon"
+                src="./imgs/novisible.png"
+                alt="eye_icon"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="bio-meta-row">
+          <div class="bio-area">
+            <p class="user-bio" id="userBio" contenteditable="false">Bio</p>
+            <button id="saveBio" class="hidden">Save</button>
+            <button id="editBio">Edit</button>
+          </div>
+        </div>
+        <p id="msgBioOk" class="hidden"></p>
+
+        <div class="xp-panel">
+          <div class="xp-header">
+            <span>Total XP</span>
+            <span
+              ><span id="currentXp">0</span>/<span id="nextLevelXp"
+                >100</span
+              ></span
+            >
+          </div>
+          <div class="xp-bar-bg">
+            <div id="xpBarFill" class="xp-bar-fill"></div>
+          </div>
+          <p class="xp-text">Complete tasks to earn XP and level up.</p>
+        </div>
+
+        <div class="task-list">
+          <div class="task-item">
+            <div>
+              <strong>Task 01</strong>
+              <div data-task="1" class="task-desc">Update biography</div>
+            </div>
+          </div>
+          <div class="task-item">
+            <div>
+              <strong>Task 02</strong>
+              <div data-task="2" class="task-desc">First Login</div>
+            </div>
+          </div>
+          <div class="task-item">
+            <div>
+              <strong>Task 03</strong>
+              <div data-task="3" class="task-desc">7-day login streak</div>
+            </div>
+          </div>
+          <div class="task-item">
+            <div>
+              <strong>Task 04</strong>
+              <div data-task="4" class="task-desc">Curious!</div>
+            </div>
+            <button id="btnCurious" class="task-btn task-btn-alt">
+              Iniciar
+            </button>
+          </div>
+        </div>
+
+        <div class="controls game-controls">
+          <button id="btnStore" class="btn-secondary">Rewards</button>
+          <button id="btnLogoutGame">Logout</button>
+        </div>
+
+        <div id="dashboardGameArea" class="dashboard-area">
+          <p>What are we doing today, Boss?</p>
+        </div>
+      </section>
+
+      <section id="storeModal" class="modal hidden">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h2 class="h2-modal">🛒 Reward Store</h2>
+            <button id="btnCloseStore">&times;</button>
+          </div>
+          <div class="user-balance">
+            Your Balance: <strong id="storeUserPoints">0</strong> pts
+          </div>
+          <div id="storeItemsContainer" class="store-grid"></div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

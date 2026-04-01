@@ -1,35 +1,37 @@
-import fs from "node:fs/promises";
-import path from "node:path";
-import { fileURLToPath } from "node:url";
 import { User } from "../components/User.js";
+import { API_CONFIG } from "../env.js";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const API_URL = API_CONFIG.BASE_URL;
 
-const FILE_PATH = path.join(__dirname, "database.json");
-
-export const saveToDatabase = async (data) => {
+export const postToDatabase = async (endpoint, data, method = "POST") => {
   try {
-    const jsonString = JSON.stringify(data, null, 2);
-    await fs.writeFile(FILE_PATH, jsonString, "utf-8");
-    console.log("💾 [System]: Database update successfully!");
+    const response = await fetch(`${API_URL}${endpoint}`, {
+      method: method,
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    });
+
+    if (!response.ok) throw new Error(`Failed to ${method} to ${endpoint}`);
+    return await response.json();
   } catch (error) {
-    console.error("❌ [Error]: Failed to save data:", error.message);
+    console.error("❌ [Database Error]:", error.message);
+    return null;
   }
 };
 
-export const loadFromDatabase = async () => {
+export const loadFromDatabase = async (endpoint) => {
   try {
-    const dataText = await fs.readFile(FILE_PATH, "utf-8");
-    const savedData = JSON.parse(dataText);
+    const response = await fetch(`${API_URL}${endpoint}`);
+    if (!response.ok) throw new Error("API Connection Failed");
 
-    return savedData.map((u) => {
-      const item = new User(u.name, u.username, u.password, u.email, u.tel);
-      item.createdAt = u.createdAt;
-      return item;
-    });
+    const savedData = await response.json();
+
+    if (endpoint.includes("users")) {
+      return savedData.map((u) => new User(u));
+    }
+    return savedData;
   } catch (error) {
-    console.log("⚠️ [System]: No database found, starting fresh.");
+    console.log("⚠️ [System]: Failed to load users, returning empty array.");
     return [];
   }
 };
