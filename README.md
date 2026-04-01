@@ -53,7 +53,7 @@ Shield OS is a high-performance dashboard built with **Pure JavaScript**. It sim
 
 1. **Clone the repository / Clonar o repositório:**
    ```bash
-   git clone [https://github.com/your-username/shield-os.git](https://github.com/your-username/shield-os.git)
+   git clone https://github.com/RenanCesar-S/shield-os.git
    ```
 2. **Environment Configuration / Configuração de Ambiente:**
 
