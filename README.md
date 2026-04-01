@@ -2,6 +2,7 @@
   <img src="./assets/shield-os.svg" alt="Shield OS Logo" width="120">
   <h1>🛡️ Shield OS - Command Center</h1>
   <p><strong>A High-Immersion Gamified Security Dashboard</strong></p>
+  ⚠️ Note: This interface is optimized for Desktop displays to ensure a full immersive terminal experience. Mobile responsiveness is not supported in this version.
 
 <p>
     <a href="#-overview--visão-geral">Overview</a> •
