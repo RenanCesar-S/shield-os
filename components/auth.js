@@ -1,5 +1,5 @@
 import { EMAILJS_CONFIG } from "../env.js";
-import { delay } from "./utils.js";
+import { delay, showToast } from "./utils.js";
 import { validateEmail, validateTel, validateName, isFieldEmpty, isPasswordStrong } from "./dataValidation.js";
 import { errorMsg } from "./error-msg.js";
 import { User } from "./User.js";
@@ -338,7 +338,6 @@ export async function sendRecoveryInstructions() {
     }
 
     const foundedUser = users.find((u) => u.email === iptForgotEmail);
-    await delay(1000);
 
     if (!foundedUser) {
       errorMsg(el.btnEmailRecovery, "We couldn't find an account with that email");
@@ -439,6 +438,15 @@ export async function handleVerifyCode() {
       return;
     }
 
+    const userChangedPassword = await loadFromDatabase(`users/${userToRecovery.userId}`);
+
+    if (!userChangedPassword) throw new Error("Failed to load user data for password update");
+
+    if (userChangedPassword.password === newPassValue) {
+      showToast("Your new password cannot be the same as the old one.", "error");
+      return;
+    }
+
     const recoveryResponse = await postToDatabase(`recoveries/${userToRecovery.id}`, { used: true }, "PUT");
 
     if (!recoveryResponse) throw new Error("Failed to invalidate recovery code");
@@ -453,6 +461,7 @@ export async function handleVerifyCode() {
 
     localStorage.removeItem("email-sent");
     localStorage.removeItem("reset-screen");
+    showToast("Password reset successful! Please log in with your new password.", "success");
 
     navigateTo("loginSection");
   } catch (error) {

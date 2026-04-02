@@ -27,11 +27,15 @@ export const loadFromDatabase = async (endpoint) => {
     const savedData = await response.json();
 
     if (endpoint.includes("users")) {
-      return savedData.map((u) => new User(u));
+      if (Array.isArray(savedData)) {
+        return savedData.map((u) => new User(u));
+      }
+      return new User(savedData);
     }
     return savedData;
   } catch (error) {
     console.log("⚠️ [System]: Failed to load users, returning empty array.");
-    return [];
+
+    return endpoint.includes("users") && !endpoint.includes("/") ? [] : null;
   }
 };
