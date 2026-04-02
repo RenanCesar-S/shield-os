@@ -82,6 +82,8 @@ Persistência: Sincronização entre LocalStorage e API externa.
 
 Desenvolvido com foco em UI/UX Cyberpunk para proporcionar uma experiência imersiva de terminal.
 
+A persistência de dados utiliza MockAPI para fins de demonstração. Em um cenário de produção, as rotas de escrita (POST/PUT/DELETE) seriam protegidas por autenticação JWT e regras de segurança no servidor.
+
 ---
 
 ## 🛠️ Support & Feedback (Suporte e Feedback)
