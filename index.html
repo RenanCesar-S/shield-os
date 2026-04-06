@@ -180,11 +180,14 @@
         <p class="info-msg">
           Enter your email address to receive a reset link.
         </p>
-        <div class="email-field">
-          <label for="emailForgot">Your Email</label>
-          <input type="email" id="emailForgot" />
-        </div>
-        <button id="btnEmailRecovery">Send Reset instructions</button>
+        <form id="formReset">
+          <div class="email-field">
+            <label for="emailForgot">Your Email</label>
+            <input type="email" id="emailForgot" />
+          </div>
+          <button id="btnEmailRecovery">Send Reset instructions</button>
+        </form>
+
         <div id="loaderReset" class="loader-reset hidden"></div>
         <span id="btnBackToLoginFromForgot">Return to Sign In</span>
       </section>

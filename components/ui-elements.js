@@ -55,6 +55,7 @@ export const Deletemodal = document.getElementById("deleteModal");
 export const nameSpan = document.getElementById("deleteUserName");
 
 // --- 🔓 FORGOT & RESET PASSWORD ---
+export const formReset = document.querySelector("#formReset");
 export const resetPassFinalSection = document.querySelector("#resetPassFinalSection");
 export const btnEmailRecovery = document.querySelector("#btnEmailRecovery");
 export const btnBackToLoginFromForgot = document.querySelector("#btnBackToLoginFromForgot");

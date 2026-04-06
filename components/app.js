@@ -24,6 +24,11 @@ el.formRegister.addEventListener("submit", (e) => {
   handleRegister();
 });
 
+el.formReset.addEventListener("submit", (e) => {
+  e.preventDefault();
+  sendRecoveryInstructions();
+});
+
 el.btnLogoutAdmin.addEventListener("click", logoutAdmin);
 el.btnLogoutGame.addEventListener("click", logoutGame);
 el.btnEmailRecovery.addEventListener("click", sendRecoveryInstructions);

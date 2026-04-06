@@ -63,6 +63,7 @@ h3 {
 /* FORMS */
 #formLogin,
 #formRegister,
+#formReset,
 #formResetFinal {
   display: flex;
   flex-direction: column;
